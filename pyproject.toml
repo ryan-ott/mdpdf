@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mdpdf"
+version = "0.1.0"
+description = "Convert Markdown to PDF with a polished technical doc theme"
+requires-python = ">=3.11"
+dependencies = [
+    "Markdown>=3.5",
+    "Pygments>=2.14",
+    "playwright>=1.40",
+]
+
+[project.scripts]
+mdpdf = "mdpdf.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: marks tests that require a real Chromium browser",
+]
