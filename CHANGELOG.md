@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.2.1] - 2026-03-24
+
+### Changed
+- Add git version tags so `uv tool upgrade mdpdf` works without `--force`
+
 ## [0.2.0] - 2026-03-24
 
 ### Added
