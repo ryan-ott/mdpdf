@@ -22,6 +22,14 @@ def render_pdf(html: str, output_path: Path) -> None:
             path=str(output_path),
             format="A4",
             print_background=True,
+            display_header_footer=True,
+            header_template="<div></div>",
+            footer_template=(
+                '<div style="width:100%;text-align:center;font-size:10px;'
+                "color:#6e7781;font-family:-apple-system,BlinkMacSystemFont,"
+                "'Segoe UI',Helvetica,Arial,sans-serif;padding-bottom:4mm;\">"
+                '<span class="pageNumber"></span></div>'
+            ),
             margin={
                 "top": "20mm",
                 "bottom": "20mm",
