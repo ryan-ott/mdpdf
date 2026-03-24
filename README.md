@@ -11,6 +11,12 @@ uv tool install git+https://github.com/ryan-ott/mdpdf
 uv tool run --from mdpdf playwright install chromium
 ```
 
+## Update
+
+```bash
+uv tool upgrade mdpdf
+```
+
 ## Usage
 
 ```bash
