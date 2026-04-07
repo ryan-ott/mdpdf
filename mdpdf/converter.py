@@ -46,6 +46,7 @@ def convert(md_text: str) -> str:
     preprocessed, mermaid_blocks = _extract_mermaid(md_text)
 
     md = markdown.Markdown(
+        tab_length=2,
         extensions=[
             FencedCodeExtension(),
             CodeHiliteExtension(

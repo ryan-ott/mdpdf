@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.2.2] - 2026-04-07
+
+### Fixed
+- List nesting now recognizes 2-space indentation to match markdown linter
+
 ## [0.2.1] - 2026-03-24
 
 ### Changed
