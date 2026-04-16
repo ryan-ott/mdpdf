@@ -22,9 +22,11 @@ def render_template(body: str) -> str:
   }}
 
   h1 {{ font-size: 2em; font-weight: 700; border-bottom: 2px solid #e1e4e8; padding-bottom: 0.3em; margin: 1.5em 0 0.75em; color: #0d1117; }}
-  h2 {{ font-size: 1.45em; font-weight: 600; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.25em; margin: 1.5em 0 0.6em; color: #0d1117; }}
-  h3 {{ font-size: 1.15em; font-weight: 600; margin: 1.3em 0 0.5em; color: #0d1117; }}
-  h4 {{ font-size: 1em; font-weight: 600; margin: 1.1em 0 0.4em; color: #0d1117; }}
+  h2 {{ font-size: 1.5em; font-weight: 600; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.25em; margin: 1.5em 0 0.6em; color: #0d1117; }}
+  h3 {{ font-size: 1.25em; font-weight: 600; margin: 1.3em 0 0.5em; color: #0d1117; }}
+  h4 {{ font-size: 1.05em; font-weight: 600; margin: 1.1em 0 0.4em; color: #0d1117; }}
+  h5 {{ font-size: 0.95em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin: 1em 0 0.35em; color: #0d1117; }}
+  h6 {{ font-size: 0.88em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin: 1em 0 0.3em; color: #57606a; }}
 
   p {{ margin: 0.6em 0; }}
   ul, ol {{ padding-left: 1.8em; margin: 0.5em 0; }}
@@ -97,7 +99,7 @@ def render_template(body: str) -> str:
   strong {{ font-weight: 600; color: #0d1117; }}
 
   pre, table, blockquote, img, .mermaid {{ page-break-inside: avoid; }}
-  h1, h2, h3, h4 {{ page-break-after: avoid; }}
+  h1, h2, h3, h4, h5, h6 {{ page-break-after: avoid; }}
 
   @page {{ margin: 20mm 18mm; }}
   @media print {{ body {{ padding: 0; max-width: 100%; }} }}

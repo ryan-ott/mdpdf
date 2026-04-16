@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3] - 2026-04-16
+
+### Changed
+- Widened visual hierarchy between h3 and h4 headings
+- Added distinct styles for h5 (uppercase, bold) and h6 (uppercase, muted)
+- Page-break-avoid rule now covers h5 and h6
+
 ## [0.2.2] - 2026-04-07
 
 ### Fixed
