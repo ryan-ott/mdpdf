@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.2.4] - 2026-05-27
+
+### Fixed
+- Long lines in code blocks no longer clip at the page edge; they now wrap within the block
+
 ## [0.2.3] - 2026-04-16
 
 ### Changed
