@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.3.0] - 2026-05-27
+
+### Added
+- `-o`/`--output` flag to specify the PDF output path; defaults to same directory as the source file
+
 ## [0.2.4] - 2026-05-27
 
 ### Fixed

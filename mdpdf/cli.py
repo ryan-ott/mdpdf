@@ -13,6 +13,11 @@ def main() -> None:
         description="Convert a Markdown file to PDF.",
     )
     parser.add_argument("file", help="Path to the Markdown file")
+    parser.add_argument(
+        "-o", "--output",
+        help="Output PDF path (default: same directory as input file)",
+        metavar="PATH",
+    )
     args = parser.parse_args()
 
     source = Path(args.file)
@@ -28,7 +33,7 @@ def main() -> None:
     if source.suffix.lower() != ".md":
         print(f"Warning: {source.name} does not have a .md extension — proceeding anyway", file=sys.stderr)
 
-    output = source.with_suffix(".pdf")
+    output = Path(args.output) if args.output else source.with_suffix(".pdf")
 
     try:
         md_text = source.read_text(encoding="utf-8")
