@@ -46,7 +46,9 @@ def render_template(body: str) -> str:
     background: #161b22;
     border-radius: 8px;
     padding: 16px 20px;
-    overflow-x: auto;
+    overflow-x: hidden;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
     margin: 1em 0;
     border: 1px solid #30363d;
   }}
@@ -59,7 +61,7 @@ def render_template(body: str) -> str:
     line-height: 1.6;
   }}
 
-  .codehilite {{ background: #161b22; border-radius: 8px; padding: 16px 20px; margin: 1em 0; border: 1px solid #30363d; overflow-x: auto; }}
+  .codehilite {{ background: #161b22; border-radius: 8px; padding: 16px 20px; margin: 1em 0; border: 1px solid #30363d; overflow-x: hidden; white-space: pre-wrap; overflow-wrap: break-word; }}
   .codehilite pre {{ background: transparent; border: none; padding: 0; margin: 0; }}
   .codehilite code {{ color: #e6edf3; font-size: 0.84em; }}
   {pygments_css}
