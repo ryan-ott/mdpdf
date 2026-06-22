@@ -10,13 +10,14 @@ google_fonts = ["Space Grotesk", "Space Mono"]
 [colors]
 primary    = "#FF4800"
 text       = "#000000"
-background = "#F6F6F6"
+background = "#ffffff"
 muted      = "#888888"
 
 [headings]
-uppercase = true
-font      = "mono"
-color     = "#FF4800"
+uppercase_levels = [1]
+color_levels     = [1]
+font             = "mono"
+color            = "#FF4800"
 
 [headings.sizes]
 h1 = "2em"

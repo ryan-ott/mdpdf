@@ -14,7 +14,8 @@ DEFAULTS: dict = {
         "muted": "#6e7781",
     },
     "headings": {
-        "uppercase": False,
+        "uppercase_levels": [],
+        "color_levels": [],
         "font": "body",
         "color": "",
         "sizes": {

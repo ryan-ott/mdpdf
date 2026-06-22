@@ -22,8 +22,17 @@ def render_template(body: str, style: dict) -> str:
 
     heading_font = resolve_font(headings["font"])
     heading_color = headings.get("color") or colors["primary"]
-    heading_transform = "uppercase" if headings.get("uppercase") else "none"
+    uppercase_levels = set(headings.get("uppercase_levels", []))
+    color_levels = set(headings.get("color_levels", []))
     sizes = headings["sizes"]
+
+    def hcolor(level: int) -> str:
+        if not color_levels or level in color_levels:
+            return heading_color
+        return colors["muted"] if level == 6 else colors["text"]
+
+    def htransform(level: int) -> str:
+        return "uppercase" if level in uppercase_levels else "none"
 
     formatter = HtmlFormatter(style=code_cfg.get("theme", "github-dark"))
     code_bg = formatter.style.background_color or "#161b22"
@@ -62,12 +71,12 @@ def render_template(body: str, style: dict) -> str:
     padding: 48px 56px;
   }}
 
-  h1 {{ font-size: {sizes["h1"]}; font-weight: 700; border-bottom: 2px solid #e1e4e8; padding-bottom: 0.3em; margin: 1.5em 0 0.75em; color: {heading_color}; font-family: {heading_font}; text-transform: {heading_transform}; }}
-  h2 {{ font-size: {sizes["h2"]}; font-weight: 600; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.25em; margin: 1.5em 0 0.6em; color: {heading_color}; font-family: {heading_font}; text-transform: {heading_transform}; }}
-  h3 {{ font-size: {sizes["h3"]}; font-weight: 600; margin: 1.3em 0 0.5em; color: {heading_color}; font-family: {heading_font}; text-transform: {heading_transform}; }}
-  h4 {{ font-size: {sizes["h4"]}; font-weight: 600; margin: 1.1em 0 0.4em; color: {heading_color}; font-family: {heading_font}; text-transform: {heading_transform}; }}
-  h5 {{ font-size: {sizes["h5"]}; font-weight: 700; letter-spacing: 0.04em; margin: 1em 0 0.35em; color: {heading_color}; font-family: {heading_font}; text-transform: {heading_transform}; }}
-  h6 {{ font-size: {sizes["h6"]}; font-weight: 600; letter-spacing: 0.04em; margin: 1em 0 0.3em; color: {colors["muted"]}; font-family: {heading_font}; text-transform: {heading_transform}; }}
+  h1 {{ font-size: {sizes["h1"]}; font-weight: 700; border-bottom: 2px solid #e1e4e8; padding-bottom: 0.3em; margin: 1.5em 0 0.75em; color: {hcolor(1)}; font-family: {heading_font}; text-transform: {htransform(1)}; }}
+  h2 {{ font-size: {sizes["h2"]}; font-weight: 600; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.25em; margin: 1.5em 0 0.6em; color: {hcolor(2)}; font-family: {heading_font}; text-transform: {htransform(2)}; }}
+  h3 {{ font-size: {sizes["h3"]}; font-weight: 600; margin: 1.3em 0 0.5em; color: {hcolor(3)}; font-family: {heading_font}; text-transform: {htransform(3)}; }}
+  h4 {{ font-size: {sizes["h4"]}; font-weight: 600; margin: 1.1em 0 0.4em; color: {hcolor(4)}; font-family: {heading_font}; text-transform: {htransform(4)}; }}
+  h5 {{ font-size: {sizes["h5"]}; font-weight: 700; letter-spacing: 0.04em; margin: 1em 0 0.35em; color: {hcolor(5)}; font-family: {heading_font}; text-transform: {htransform(5)}; }}
+  h6 {{ font-size: {sizes["h6"]}; font-weight: 600; letter-spacing: 0.04em; margin: 1em 0 0.3em; color: {hcolor(6)}; font-family: {heading_font}; text-transform: {htransform(6)}; }}
 
   p {{ margin: 0.6em 0; }}
   ul, ol {{ padding-left: 1.8em; margin: 0.5em 0; }}
