@@ -39,7 +39,7 @@ def main() -> None:
         md_text = source.read_text(encoding="utf-8")
         body = convert(md_text)
         html = render_template(body)
-        render_pdf(html, output)
+        render_pdf(html, output, base_dir=source.parent)
     except PermissionError:
         print(f"Error: cannot write to {output} (permission denied)", file=sys.stderr)
         sys.exit(1)

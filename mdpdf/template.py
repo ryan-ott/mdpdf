@@ -100,6 +100,7 @@ def render_template(body: str) -> str:
   hr {{ border: none; border-top: 1px solid #e1e4e8; margin: 2em 0; }}
   strong {{ font-weight: 600; color: #0d1117; }}
 
+  img {{ max-width: 100%; max-height: 220mm; width: auto; height: auto; }}
   pre, table, blockquote, img, .mermaid {{ page-break-inside: avoid; }}
   h1, h2, h3, h4, h5, h6 {{ page-break-after: avoid; }}
 
