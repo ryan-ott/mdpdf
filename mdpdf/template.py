@@ -1,39 +1,80 @@
 from pygments.formatters import HtmlFormatter
 
 
-def render_template(body: str) -> str:
-    pygments_css = HtmlFormatter(style="github-dark").get_style_defs(".codehilite")
+def _is_dark(hex_color: str) -> bool:
+    c = hex_color.lstrip("#")
+    r, g, b = int(c[0:2], 16), int(c[2:4], 16), int(c[4:6], 16)
+    return (0.299 * r + 0.587 * g + 0.114 * b) < 128
+
+
+def render_template(body: str, style: dict) -> str:
+    fonts = style["fonts"]
+    colors = style["colors"]
+    headings = style["headings"]
+    code_cfg = style["code"]
+    footer_cfg = style["footer"]
+
+    body_font = fonts["body"]
+    mono_font = fonts["mono"]
+
+    def resolve_font(name: str) -> str:
+        return mono_font if name == "mono" else body_font
+
+    heading_font = resolve_font(headings["font"])
+    heading_color = headings.get("color") or colors["primary"]
+    heading_transform = "uppercase" if headings.get("uppercase") else "none"
+    sizes = headings["sizes"]
+
+    formatter = HtmlFormatter(style=code_cfg.get("theme", "github-dark"))
+    code_bg = formatter.style.background_color or "#161b22"
+    code_text = "#e6edf3" if _is_dark(code_bg) else "#24292f"
+    code_border = "#30363d" if _is_dark(code_bg) else "#e1e4e8"
+    pygments_css = formatter.get_style_defs(".codehilite")
+
+    google_fonts_link = ""
+    if fonts["google_fonts"]:
+        families = "&family=".join(
+            f.replace(" ", "+") + ":wght@300;400;600;700"
+            for f in fonts["google_fonts"]
+        )
+        google_fonts_link = (
+            '<link rel="preconnect" href="https://fonts.googleapis.com">'
+            '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+            f'<link href="https://fonts.googleapis.com/css2?family={families}&display=swap" rel="stylesheet">'
+        )
 
     return f"""<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
+{google_fonts_link}
 <style>
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
 
   body {{
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-family: {body_font};
     font-size: 13.5px;
     line-height: 1.7;
-    color: #24292f;
+    color: {colors["text"]};
+    background: {colors["background"]};
     max-width: 860px;
     margin: 0 auto;
     padding: 48px 56px;
   }}
 
-  h1 {{ font-size: 2em; font-weight: 700; border-bottom: 2px solid #e1e4e8; padding-bottom: 0.3em; margin: 1.5em 0 0.75em; color: #0d1117; }}
-  h2 {{ font-size: 1.5em; font-weight: 600; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.25em; margin: 1.5em 0 0.6em; color: #0d1117; }}
-  h3 {{ font-size: 1.25em; font-weight: 600; margin: 1.3em 0 0.5em; color: #0d1117; }}
-  h4 {{ font-size: 1.05em; font-weight: 600; margin: 1.1em 0 0.4em; color: #0d1117; }}
-  h5 {{ font-size: 0.95em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin: 1em 0 0.35em; color: #0d1117; }}
-  h6 {{ font-size: 0.88em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin: 1em 0 0.3em; color: #57606a; }}
+  h1 {{ font-size: {sizes["h1"]}; font-weight: 700; border-bottom: 2px solid #e1e4e8; padding-bottom: 0.3em; margin: 1.5em 0 0.75em; color: {heading_color}; font-family: {heading_font}; text-transform: {heading_transform}; }}
+  h2 {{ font-size: {sizes["h2"]}; font-weight: 600; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.25em; margin: 1.5em 0 0.6em; color: {heading_color}; font-family: {heading_font}; text-transform: {heading_transform}; }}
+  h3 {{ font-size: {sizes["h3"]}; font-weight: 600; margin: 1.3em 0 0.5em; color: {heading_color}; font-family: {heading_font}; text-transform: {heading_transform}; }}
+  h4 {{ font-size: {sizes["h4"]}; font-weight: 600; margin: 1.1em 0 0.4em; color: {heading_color}; font-family: {heading_font}; text-transform: {heading_transform}; }}
+  h5 {{ font-size: {sizes["h5"]}; font-weight: 700; letter-spacing: 0.04em; margin: 1em 0 0.35em; color: {heading_color}; font-family: {heading_font}; text-transform: {heading_transform}; }}
+  h6 {{ font-size: {sizes["h6"]}; font-weight: 600; letter-spacing: 0.04em; margin: 1em 0 0.3em; color: {colors["muted"]}; font-family: {heading_font}; text-transform: {heading_transform}; }}
 
   p {{ margin: 0.6em 0; }}
   ul, ol {{ padding-left: 1.8em; margin: 0.5em 0; }}
   li {{ margin: 0.2em 0; }}
 
   code {{
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-family: {mono_font};
     font-size: 0.87em;
     background: #f6f8fa;
     border: 1px solid #e1e4e8;
@@ -43,27 +84,28 @@ def render_template(body: str) -> str:
   }}
 
   pre {{
-    background: #161b22;
+    background: {code_bg};
     border-radius: 8px;
     padding: 16px 20px;
     overflow-x: hidden;
     white-space: pre-wrap;
     overflow-wrap: break-word;
     margin: 1em 0;
-    border: 1px solid #30363d;
+    border: 1px solid {code_border};
   }}
   pre code {{
     background: transparent;
     border: none;
     padding: 0;
-    color: #e6edf3;
+    color: {code_text};
     font-size: 0.84em;
     line-height: 1.6;
+    font-family: {mono_font};
   }}
 
-  .codehilite {{ background: #161b22; border-radius: 8px; padding: 16px 20px; margin: 1em 0; border: 1px solid #30363d; overflow-x: hidden; white-space: pre-wrap; overflow-wrap: break-word; }}
+  .codehilite {{ background: {code_bg}; border-radius: 8px; padding: 16px 20px; margin: 1em 0; border: 1px solid {code_border}; overflow-x: hidden; white-space: pre-wrap; overflow-wrap: break-word; }}
   .codehilite pre {{ background: transparent; border: none; padding: 0; margin: 0; }}
-  .codehilite code {{ color: #e6edf3; font-size: 0.84em; }}
+  .codehilite code {{ color: {code_text}; font-size: 0.84em; font-family: {mono_font}; }}
   {pygments_css}
 
   table {{
@@ -78,7 +120,7 @@ def render_template(body: str) -> str:
     padding: 8px 12px;
     text-align: left;
     font-weight: 600;
-    color: #0d1117;
+    color: {colors["text"]};
   }}
   td {{
     border: 1px solid #d0d7de;
@@ -88,17 +130,17 @@ def render_template(body: str) -> str:
   tr:nth-child(even) td {{ background: #f6f8fa; }}
 
   blockquote {{
-    border-left: 4px solid #0969da;
+    border-left: 4px solid {colors["primary"]};
     background: #f0f6ff;
     margin: 1em 0;
     padding: 10px 16px;
     border-radius: 0 6px 6px 0;
-    color: #24292f;
+    color: {colors["text"]};
   }}
   blockquote p {{ margin: 0.3em 0; }}
 
   hr {{ border: none; border-top: 1px solid #e1e4e8; margin: 2em 0; }}
-  strong {{ font-weight: 600; color: #0d1117; }}
+  strong {{ font-weight: 600; color: {colors["text"]}; }}
 
   img {{ max-width: 100%; max-height: 220mm; width: auto; height: auto; }}
   pre, table, blockquote, img, .mermaid {{ page-break-inside: avoid; }}

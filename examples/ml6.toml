@@ -1,0 +1,33 @@
+# ML6 brand style for mdpdf
+# Copy to mdpdf.toml in your project directory to apply automatically,
+# or pass explicitly with: mdpdf doc.md --style ml6.toml
+
+[fonts]
+body        = "Space Grotesk"
+mono        = "Space Mono"
+google_fonts = ["Space Grotesk", "Space Mono"]
+
+[colors]
+primary    = "#FF4800"
+text       = "#000000"
+background = "#F6F6F6"
+muted      = "#888888"
+
+[headings]
+uppercase = true
+font      = "mono"
+color     = "#FF4800"
+
+[headings.sizes]
+h1 = "2em"
+h2 = "1.5em"
+h3 = "1.25em"
+h4 = "1.05em"
+h5 = "0.95em"
+h6 = "0.88em"
+
+[code]
+theme = "friendly"
+
+[footer]
+font = "mono"
