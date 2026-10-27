@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- Obsidian image embeds (`![[chart.svg|760]]`) render as images, resolved relative to the Markdown file
+
 ## [0.3.0] - 2026-05-27
 
 ### Added

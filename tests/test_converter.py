@@ -99,3 +99,16 @@ def test_convert_mermaid_mixed_with_code():
     html = convert(md)
     assert "codehilite" in html          # python block is highlighted
     assert '<div class="mermaid">' in html  # mermaid block is a div
+
+
+def test_convert_obsidian_embed_with_width():
+    html = convert("![[Brand chart - Price.svg|760]]")
+    assert '<img src="Brand%20chart%20-%20Price.svg"' in html
+    assert 'width="760"' in html
+    assert "![[" not in html
+
+
+def test_convert_obsidian_embed_without_width():
+    html = convert("![[chart.svg]]")
+    assert '<img src="chart.svg"' in html
+    assert "width=" not in html

@@ -1,4 +1,7 @@
 import re
+from html import escape
+from urllib.parse import quote
+
 import markdown
 from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.extensions.fenced_code import FencedCodeExtension
@@ -11,6 +14,21 @@ _MERMAID_FENCE_RE = re.compile(
     re.DOTALL,
 )
 _PLACEHOLDER_PREFIX = "MDPDF_MERMAID_"
+
+
+_EMBED_RE = re.compile(r"!\[\[([^\]|]+?)(?:\|([^\]]*))?\]\]")
+
+
+def _embeds_to_img(md_text: str) -> str:
+    """Turn Obsidian embeds (![[chart.svg|760]]) into <img> tags with a path relative to the source file."""
+    def replacer(match: re.Match) -> str:
+        target, alias = match.group(1).strip(), (match.group(2) or "").strip()
+        attrs = f'src="{quote(target)}" alt="{escape(target)}"'
+        if alias.isdigit():
+            attrs += f' width="{alias}"'
+        return f"<img {attrs}>"
+
+    return _EMBED_RE.sub(replacer, md_text)
 
 
 def _extract_mermaid(md_text: str) -> tuple[str, list[str]]:
@@ -43,7 +61,7 @@ def _restore_mermaid(html: str, blocks: list[str]) -> str:
 
 def convert(md_text: str) -> str:
     """Convert Markdown text to an HTML body fragment."""
-    preprocessed, mermaid_blocks = _extract_mermaid(md_text)
+    preprocessed, mermaid_blocks = _extract_mermaid(_embeds_to_img(md_text))
 
     md = markdown.Markdown(
         tab_length=2,
